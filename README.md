@@ -1,4 +1,4 @@
-# Bluetooth-Debug
+# NexoECU
 
 PT-BR | [EN](#EN)
 
