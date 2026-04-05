@@ -1,85 +1,6 @@
 # NexoECU
 
-PT-BR | [EN](#EN)
-
----
-
-## PT-BR
-
-Repositório de firmware para um sistema embarcado com 2 ECUs, baseado em ESP32 e PlatformIO.
-
-## Visao Geral
-
-Este projeto contem duas unidades principais:
-
-- ECU Transmissora (MPU): coleta e transmite dados de sensores, GPS e LoRa, alem de enviar status por Bluetooth.
-- ECU Intermediaria (SCU): recebe/organiza dados via CAN, faz logging em micro-SD e envia pacotes por GPRS/MQTT.
-
-## Estrutura do Repositorio
-
-- MPU_2024-Transmitter/
-	- Firmware da ECU transmissora.
-	- Framework: Arduino (ESP32).
-	- Funcoes principais: LoRa, CAN, GPS, Bluetooth debug.
-- espidf_ecu-main/
-	- Firmware da ECU intermediaria.
-	- Framework: Arduino (ESP32).
-	- Funcoes principais: CAN logging, SD state machine, conectividade GPRS/MQTT.
-
-## Dependencias
-
-Ambos os projetos usam PlatformIO e ESP32 (board: esp32doit-devkit-v1).
-
-Dependencias principais:
-
-- MPU_2024-Transmitter
-	- CircularBuffer
-	- TinyGPSPlus-ESP32
-	- ArduinoJson
-- espidf_ecu-main
-	- TinyGSM
-	- PubSubClient
-	- CANmsg (via GitHub)
-
-## Como Compilar e Gravar
-
-Pre-requisitos:
-
-- VS Code com extensao PlatformIO
-- Drivers USB da placa ESP32
-
-Passos (exemplo com terminal):
-
-1. Compilar ECU transmissora:
-	 - `pio run -d MPU_2024-Transmitter`
-2. Gravar ECU transmissora:
-	 - `pio run -d MPU_2024-Transmitter -t upload`
-3. Monitor serial ECU transmissora:
-	 - `pio device monitor -d MPU_2024-Transmitter -b 115200`
-4. Compilar ECU intermediaria:
-	 - `pio run -d espidf_ecu-main`
-5. Gravar ECU intermediaria:
-	 - `pio run -d espidf_ecu-main -t upload`
-6. Monitor serial ECU intermediaria:
-	 - `pio device monitor -d espidf_ecu-main -b 115200`
-
-Se houver mais de uma porta serial conectada, defina `upload_port` e `monitor_port` nos respectivos `platformio.ini`.
-
-## Fluxo Funcional (Resumo)
-
-- ECU Transmissora:
-	- Inicializa LoRa, CAN, GPS e Bluetooth.
-	- Publica dados periodicamente e transmite mensagens de status.
-- ECU Intermediaria:
-	- Inicializa CAN, SD e modem.
-	- Executa maquinas de estado separadas para SD e conectividade.
-	- Publica pacotes via MQTT e envia status de diagnostico via CAN.
-
-## Observacoes
-
-- Existe conteudo de backup em `espidf_ecu-main/backup/`.
-- A configuracao atual pressupoe uso de FreeRTOS tasks no ESP32.
-- Para ajustes de hardware (pinos, IDs CAN, pacotes), consulte headers em `include/` e `lib/Defines/` de cada modulo.
+EN | [PT-BR](#PT-BR)
 
 ---
 
@@ -159,3 +80,84 @@ If multiple serial devices are connected, set `upload_port` and `monitor_port` i
 - There is backup content in `espidf_ecu-main/backup/`.
 - Current setup relies on FreeRTOS tasks on ESP32.
 - For hardware mapping and protocol tuning (pins, CAN IDs, packets), check `include/` and `lib/Defines/` in each module.
+
+---
+
+## PT-BR
+
+[EN](#NexoECU) | PT-BR
+
+Repositório de firmware para um sistema embarcado com 2 ECUs, baseado em ESP32 e PlatformIO.
+
+## Visao Geral
+
+Este projeto contem duas unidades principais:
+
+- ECU Transmissora (MPU): coleta e transmite dados de sensores, GPS e LoRa, alem de enviar status por Bluetooth.
+- ECU Intermediaria (SCU): recebe/organiza dados via CAN, faz logging em micro-SD e envia pacotes por GPRS/MQTT.
+
+## Estrutura do Repositorio
+
+- MPU_2024-Transmitter/
+	- Firmware da ECU transmissora.
+	- Framework: Arduino (ESP32).
+	- Funcoes principais: LoRa, CAN, GPS, Bluetooth debug.
+- espidf_ecu-main/
+	- Firmware da ECU intermediaria.
+	- Framework: Arduino (ESP32).
+	- Funcoes principais: CAN logging, SD state machine, conectividade GPRS/MQTT.
+
+## Dependencias
+
+Ambos os projetos usam PlatformIO e ESP32 (board: esp32doit-devkit-v1).
+
+Dependencias principais:
+
+- MPU_2024-Transmitter
+	- CircularBuffer
+	- TinyGPSPlus-ESP32
+	- ArduinoJson
+- espidf_ecu-main
+	- TinyGSM
+	- PubSubClient
+	- CANmsg (via GitHub)
+
+## Como Compilar e Gravar
+
+Pre-requisitos:
+
+- VS Code com extensao PlatformIO
+- Drivers USB da placa ESP32
+
+Passos (exemplo com terminal):
+
+1. Compilar ECU transmissora:
+	 - `pio run -d MPU_2024-Transmitter`
+2. Gravar ECU transmissora:
+	 - `pio run -d MPU_2024-Transmitter -t upload`
+3. Monitor serial ECU transmissora:
+	 - `pio device monitor -d MPU_2024-Transmitter -b 115200`
+4. Compilar ECU intermediaria:
+	 - `pio run -d espidf_ecu-main`
+5. Gravar ECU intermediaria:
+	 - `pio run -d espidf_ecu-main -t upload`
+6. Monitor serial ECU intermediaria:
+	 - `pio device monitor -d espidf_ecu-main -b 115200`
+
+Se houver mais de uma porta serial conectada, defina `upload_port` e `monitor_port` nos respectivos `platformio.ini`.
+
+## Fluxo Funcional (Resumo)
+
+- ECU Transmissora:
+	- Inicializa LoRa, CAN, GPS e Bluetooth.
+	- Publica dados periodicamente e transmite mensagens de status.
+- ECU Intermediaria:
+	- Inicializa CAN, SD e modem.
+	- Executa maquinas de estado separadas para SD e conectividade.
+	- Publica pacotes via MQTT e envia status de diagnostico via CAN.
+
+## Observacoes
+
+- Existe conteudo de backup em `espidf_ecu-main/backup/`.
+- A configuracao atual pressupoe uso de FreeRTOS tasks no ESP32.
+- Para ajustes de hardware (pinos, IDs CAN, pacotes), consulte headers em `include/` e `lib/Defines/` de cada modulo.
